@@ -2,6 +2,7 @@
 #include <utility>
 #include <queue>
 #include <algorithm>
+#include <iostream>
 
 int	WIDTH;
 int	HEIGHT;
@@ -17,6 +18,19 @@ void init(int W, int H)
 {
 	WIDTH = W;
 	HEIGHT = H;
+}
+
+void	printMap()
+{
+	for (int  i = 0; i < WIDTH; i++)
+	{
+		for (int j = 1; j <= HEIGHT; j++)
+		{
+			cout<<block[i][j]<<" ";
+		}
+		cout<<endl;
+	}
+	cout<<endl<<endl<<endl;
 }
 
 int	checkVerti()
@@ -50,10 +64,20 @@ int	checkVerti()
 					}
 					flag = 1;
 				}
-				count = 0;
-
+				kind = block[i][j];
+				count = 1;
+				start = j;
 			}
 		}
+		if (count >= 5)
+		{
+			for (int idx = start; idx < h; idx++)
+			{
+				block[i][idx] = kind + 2;
+			}
+			flag = 1;
+		}
+		count = 0;
 	}
 	return (flag);
 }
@@ -85,15 +109,19 @@ int	checkHori()
 					flag = 1;
 				}
 				count = 0;
+				continue;
 			}
-			else if (count == 0)
+			if (count == 0)
 			{
 				start = i;
 				kind = block[i][j];
 				count++;
+				continue;
 			}
-			else if (block[i][j] == kind)
+			if (block[i][j] == kind)
+			{
 				count++;
+			}
 			else
 			{
 				if (count >= 5)
@@ -104,14 +132,25 @@ int	checkHori()
 					}
 					flag = 1;
 				}
-				count = 0;
+				start = i;
+				kind = block[i][j];
+				count = 1;
 			}
 		}
+		if (count >= 5)
+		{
+			for (int idx = start; idx < WIDTH; idx++)
+			{
+				block[idx][j] = kind + 2;
+			}
+			flag = 1;
+		}
+		count = 0;
 	}
 	return (flag);
 }
 
-int	checkRightUP()
+int	checkRightUp()
 {
 	int flag = 0;
 	int	h = 0;
@@ -159,45 +198,298 @@ int	checkRightUP()
 					}
 					flag = 1;
 				}
-				count = 0;
+				start = i;
+				count = 1;
 			}
 		}
+		if (count >= 5)
+		{
+			for (int idx = start; idx < h; idx++)
+			{
+				block[i + start - 1][start] = kind + 2;
+			}
+			flag = 1;
+		}
+		count = 0;
+	}
+	for (int j = 2; j < h; j++)
+	{
+		int x = j;
+		int count = 0;
+		int kind, start;
+		for (int jj = 1; jj < h; jj++)
+		{
+			if (block[j + jj - 1][jj] == 0)
+			{
+				if (count >= 5)
+				{
+					for (int idx = start; idx < jj; idx++)
+					{
+						block[j + start - 1][start] = kind + 2;
+					}
+					flag = 1;
+				}
+				count = 0;
+			}
+			else if (count == 0)
+			{
+				start = j;
+				kind = block[j + jj - 1][jj];
+				count++;
+			}
+			else if (block[j + jj - 1][jj] == kind)
+				count++;
+			else
+			{
+				if (count >= 5)
+				{
+					for (int idx = start; idx < jj; idx++)
+					{
+						block[j + start - 1][start] = kind + 2;
+					}
+					flag = 1;
+				}
+				start = j;
+				count = 1;
+			}
+		}
+		if (count >= 5)
+		{
+			for (int idx = start; idx < h; idx++)
+			{
+				block[j + start - 1][start] = kind + 2;
+			}
+			flag = 1;
+		}
+		count = 0;
 	}
 	return (flag);
 }
 
-int	checkLeftUp();
+int	checkLeftUp()
+{
+		int flag = 0;
+	int	h = 0;
 
-int	addpoint(int mPlayer);
+	for (int i = 0; i < WIDTH; i++)
+	{
+		h = max(h, block[i][0]);
+	}
+
+	for (int i = WIDTH; i >= 0; i--)
+	{
+		int x = i;
+		int count = 0;
+		int kind, start;
+		
+		for (int j = 1; j < h; j++)
+		{
+			if (i - j < 0)
+				break;
+			if (block[i - j][j] == 0)
+			{
+				if (count >= 5)
+				{
+					for (int idx = start; idx < j; idx++)
+					{
+						block[i - idx][idx] = kind + 2;
+					}
+					flag = 1;
+				}
+				count = 0;
+			}
+			else if (count == 0)
+			{
+				start = i;
+				kind = block[i - j][j];
+				count++;
+			}
+			else if (block[i - j][j] == kind)
+				count++;
+			else
+			{
+				if (count >= 5)
+				{
+					for (int idx = start; idx < j; idx++)
+					{
+						block[i - idx][idx] = kind + 2;
+					}
+					flag = 1;
+				}
+				count = 1;
+				start = i;
+			}
+		}
+		if (count >= 5)
+		{
+			for (int idx = start; idx < h; idx++)
+			{
+				block[i - idx][idx] = kind + 2;
+			}
+			flag = 1;
+		}
+	}
+	for (int j = 2; j < h; j++)
+	{
+		int x = j;
+		int count = 0;
+		int kind, start;
+		for (int jj = 1; jj < h; jj++)
+		{
+			if (j - jj < 0)
+				break;
+			if (block[j - jj][jj] == 0)
+			{
+				if (count >= 5)
+				{
+					for (int idx = start; idx < jj; idx++)
+					{
+						block[j - idx][idx] = kind + 2;
+					}
+					flag = 1;
+				}
+				count = 0;
+			}
+			else if (count == 0)
+			{
+				start = j;
+				kind = block[j - jj][jj];
+				count++;
+			}
+			else if (block[j - jj][jj] == kind)
+				count++;
+			else
+			{
+				if (count >= 5)
+				{
+					for (int idx = start; idx < jj; idx++)
+					{
+						block[j - idx][idx] = kind + 2;
+					}
+					flag = 1;
+				}
+				start = j;
+				count = 1;
+			}
+		}
+		if (count >= 5)
+		{
+			for (int idx = start; idx < h; idx++)
+			{
+				block[j - idx][idx] = kind + 2;
+			}
+			flag = 1;
+		}
+		count = 0;
+	}
+	return (flag);
+}
+
+int	addpoint(int mPlayer)
+{
+	int b1 = 0;
+	int b2 = 0;
+	int point = 0;
+
+	for (int i = 0; i < WIDTH; i++)
+	{
+		int count = 0;
+		for (int j = 1; j <= HEIGHT; j++)
+		{
+			if (block[i][j] > 2)
+			{
+				if (block[i][j] == mPlayer + 2)
+					point++;
+				if (block[i][j] == 3)
+					b1++;
+				else
+					b2++;
+				count++;
+				block[i][j] = 0;
+				continue;
+			}
+			if (count > 0)
+			{
+				block[i][j - count] = block[i][j];
+				block[i][j] = 0;
+			}
+		}
+		block[i][0] -= count;
+	}
+	block1 -= b1;
+	block2 -= b2;
+	return (point);
+}
 
 
 int dropBlocks(int mPlayer, int mCol)
 {
+	int ret = 0;
 	for (int i = 0; i < 3; i++)
 	{
-		block[mCol + i][block[mCol + i][0]++] = mPlayer;
+		block[mCol + i][++block[mCol + i][0]] = mPlayer;
 	}
 	if (mPlayer == 1)
 		block1 += 3;
 	else
 		block2 += 3;
-	if (checkHori() || checkVerti()|| checkRightUp() || checkLeftUp())
-		return (addpoint(mPlayer));
-	return 0;
+	while (checkHori() || checkVerti()|| checkRightUp() || checkLeftUp())
+		ret += addpoint(mPlayer);
+	if (mPlayer == 1)
+		point1 += ret;
+	else
+		point2 += ret;
+	cout<<"add"<<endl;
+	printMap();
+	return ret;
 }
 
 int changeBlocks(int mPlayer, int mCol)
 {
-	queue<pair<int, int>>	bfs;
+	queue<pair<int, int> >	bfs;
+	int ret = 0;
+	int kind = block[mCol][1];
+	int i = mCol; 
+	int j = 1;
+	int change = (mPlayer == 2 ? 1 : 2);
 
-	bfs.push({mCol, 1});
-	while (bfs.size())
+	if (kind != 0)
+		bfs.push({mCol, 1});
+	while (bfs.size() > 0)
 	{
-
+		block[i][j] = change;
+		cout<<bfs.size()<<endl;
+		i = bfs.front().first;
+		j = bfs.front().second;
+		if (i - 1 >= 0 && block[i - 1][j] == kind)
+		{
+			bfs.push({i - 1, j});
+			block[i - 1][j] = change;
+		}
+		if (i + 1 < WIDTH && block[i + 1][j] == kind)
+		{
+			bfs.push({i + 1, j});
+			block[i + 1][j] = change;
+		}
+		if (j - 1 > 0 && block[i][j - 1] == kind)
+		{
+			bfs.push({i, j - 1});
+			block[i][j - 1] = change;
+		}
+		if (j + 1 <= HEIGHT&& block[i][j] == kind)
+		{
+			bfs.push({i, j + 1});
+			block[i][j + 1] = change;
+		}
+		bfs.pop();
 	}
-	if (checkHori() || checkVerti()|| checkRightUp() || checkLeftUp())
-		return (addpoint(mPlayer));
-	return 0;
+	cout<<"Change"<<endl;
+	printMap();
+	while (checkHori() || checkVerti()|| checkRightUp() || checkLeftUp())
+		ret += addpoint(mPlayer);
+	cout<<"Change"<<endl;
+	printMap();
+	return ret;
 }
 
 
@@ -205,6 +497,8 @@ int getResult(int mBlockCnt[2])
 {
 	mBlockCnt[0] = block1;
 	mBlockCnt[1] = block2;
+	cout<<"p1 : "<<point1<<" p2 : "<<point2<<endl;
+	cout<<"b1 : "<<block1<<" b2 : "<<block2<<endl;
 	if (point1 == point2)
 		return (0);
 	if (point1 > point2)
