@@ -44,15 +44,15 @@ int	checkVerti()
 		int count = 0;
 		int start;
 		int kind;
-		for (int j = 1; j < h; j++)
+		for (int j = 1; j <= h; j++)
 		{
 			if (count == 0)
 			{
 				start = j;
-				kind = block[i][j];
+				kind = block[i][j] % 3;
 				count++;
 			}
-			else if (block[i][j] == kind)
+			else if (block[i][j] % 3 == kind)
 				count++;
 			else
 			{
@@ -60,20 +60,20 @@ int	checkVerti()
 				{
 					for (int idx = start; idx < j; idx++)
 					{
-						block[i][idx] = kind + 2;
+						block[i][idx] = kind + 3;
 					}
 					flag = 1;
 				}
-				kind = block[i][j];
+				kind = block[i][j] % 3;
 				count = 1;
 				start = j;
 			}
 		}
 		if (count >= 5)
 		{
-			for (int idx = start; idx < h; idx++)
+			for (int idx = start; idx <= h; idx++)
 			{
-				block[i][idx] = kind + 2;
+				block[i][idx] = kind + 3;
 			}
 			flag = 1;
 		}
@@ -91,7 +91,7 @@ int	checkHori()
 		h = max(h, block[i][0]);
 	}
 
-	for (int j = 1; j < h; j++)
+	for (int j = 1; j <= h; j++)
 	{
 		int count = 0;
 		int start;
@@ -104,7 +104,7 @@ int	checkHori()
 				{
 					for (int idx = start; idx < i; idx++)
 					{
-						block[idx][j] = kind + 2;
+						block[idx][j] = kind + 3;
 					}
 					flag = 1;
 				}
@@ -114,11 +114,11 @@ int	checkHori()
 			if (count == 0)
 			{
 				start = i;
-				kind = block[i][j];
+				kind = block[i][j] % 3;
 				count++;
 				continue;
 			}
-			if (block[i][j] == kind)
+			if (block[i][j] % 3 == kind)
 			{
 				count++;
 			}
@@ -128,12 +128,12 @@ int	checkHori()
 				{
 					for (int idx = start; idx < i; idx++)
 					{
-						block[idx][j] = kind + 2;
+						block[idx][j] = kind + 3;
 					}
 					flag = 1;
 				}
 				start = i;
-				kind = block[i][j];
+				kind = block[i][j] % 3;
 				count = 1;
 			}
 		}
@@ -141,7 +141,7 @@ int	checkHori()
 		{
 			for (int idx = start; idx < WIDTH; idx++)
 			{
-				block[idx][j] = kind + 2;
+				block[idx][j] = kind + 3;
 			}
 			flag = 1;
 		}
@@ -166,7 +166,7 @@ int	checkRightUp()
 		int count = 0;
 		int kind, start;
 		
-		for (int j = 1; j < h; j++)
+		for (int j = 1; j <= h; j++)
 		{
 			if (block[i + j - 1][j] == 0)
 			{
@@ -174,7 +174,7 @@ int	checkRightUp()
 				{
 					for (int idx = start; idx < j; idx++)
 					{
-						block[i + start - 1][start] = kind + 2;
+						block[i + start - 1][start] = kind + 3;
 					}
 					flag = 1;
 				}
@@ -183,10 +183,10 @@ int	checkRightUp()
 			else if (count == 0)
 			{
 				start = i;
-				kind = block[i + j - 1][j];
+				kind = block[i + j - 1][j] % 3;
 				count++;
 			}
-			else if (block[i + j - 1][j] == kind)
+			else if (block[i + j - 1][j] % 3 == kind)
 				count++;
 			else
 			{
@@ -194,30 +194,31 @@ int	checkRightUp()
 				{
 					for (int idx = start; idx < j; idx++)
 					{
-						block[i + start - 1][start] = kind + 2;
+						block[i + start - 1][start] = kind + 3;
 					}
 					flag = 1;
 				}
+				kind = block[i + j - 1][j] % 3;
 				start = i;
 				count = 1;
 			}
 		}
 		if (count >= 5)
 		{
-			for (int idx = start; idx < h; idx++)
+			for (int idx = start; idx <= h; idx++)
 			{
-				block[i + start - 1][start] = kind + 2;
+				block[i + start - 1][start] = kind + 3;
 			}
 			flag = 1;
 		}
 		count = 0;
 	}
-	for (int j = 2; j < h; j++)
+	for (int j = 2; j <= h; j++)
 	{
 		int x = j;
 		int count = 0;
 		int kind, start;
-		for (int jj = 1; jj < h; jj++)
+		for (int jj = 1; jj <= h; jj++)
 		{
 			if (block[j + jj - 1][jj] == 0)
 			{
@@ -225,7 +226,7 @@ int	checkRightUp()
 				{
 					for (int idx = start; idx < jj; idx++)
 					{
-						block[j + start - 1][start] = kind + 2;
+						block[j + start - 1][start] = kind + 3;
 					}
 					flag = 1;
 				}
@@ -234,10 +235,10 @@ int	checkRightUp()
 			else if (count == 0)
 			{
 				start = j;
-				kind = block[j + jj - 1][jj];
+				kind = block[j + jj - 1][jj] % 3;
 				count++;
 			}
-			else if (block[j + jj - 1][jj] == kind)
+			else if (block[j + jj - 1][jj] % 3 == kind)
 				count++;
 			else
 			{
@@ -245,19 +246,20 @@ int	checkRightUp()
 				{
 					for (int idx = start; idx < jj; idx++)
 					{
-						block[j + start - 1][start] = kind + 2;
+						block[j + start - 1][start] = kind + 3;
 					}
 					flag = 1;
 				}
+				kind = block[j + jj - 1][jj] % 3;
 				start = j;
 				count = 1;
 			}
 		}
 		if (count >= 5)
 		{
-			for (int idx = start; idx < h; idx++)
+			for (int idx = start; idx <= h; idx++)
 			{
-				block[j + start - 1][start] = kind + 2;
+				block[j + start - 1][start] = kind + 3;
 			}
 			flag = 1;
 		}
@@ -282,7 +284,7 @@ int	checkLeftUp()
 		int count = 0;
 		int kind, start;
 		
-		for (int j = 1; j < h; j++)
+		for (int j = 1; j <= h; j++)
 		{
 			if (i - j < 0)
 				break;
@@ -292,7 +294,7 @@ int	checkLeftUp()
 				{
 					for (int idx = start; idx < j; idx++)
 					{
-						block[i - idx][idx] = kind + 2;
+						block[i - idx][idx] = kind + 3;
 					}
 					flag = 1;
 				}
@@ -301,10 +303,10 @@ int	checkLeftUp()
 			else if (count == 0)
 			{
 				start = i;
-				kind = block[i - j][j];
+				kind = block[i - j][j] % 3;
 				count++;
 			}
-			else if (block[i - j][j] == kind)
+			else if (block[i - j][j] % 3 == kind)
 				count++;
 			else
 			{
@@ -312,29 +314,30 @@ int	checkLeftUp()
 				{
 					for (int idx = start; idx < j; idx++)
 					{
-						block[i - idx][idx] = kind + 2;
+						block[i - idx][idx] = kind + 3;
 					}
 					flag = 1;
 				}
+				kind = block[i - j][j] % 3;
 				count = 1;
 				start = i;
 			}
 		}
 		if (count >= 5)
 		{
-			for (int idx = start; idx < h; idx++)
+			for (int idx = start; idx <= h; idx++)
 			{
-				block[i - idx][idx] = kind + 2;
+				block[i - idx][idx] = kind + 3;
 			}
 			flag = 1;
 		}
 	}
-	for (int j = 2; j < h; j++)
+	for (int j = 2; j <= h; j++)
 	{
 		int x = j;
 		int count = 0;
 		int kind, start;
-		for (int jj = 1; jj < h; jj++)
+		for (int jj = 1; jj <= h; jj++)
 		{
 			if (j - jj < 0)
 				break;
@@ -344,7 +347,7 @@ int	checkLeftUp()
 				{
 					for (int idx = start; idx < jj; idx++)
 					{
-						block[j - idx][idx] = kind + 2;
+						block[j - idx][idx] = kind + 3;
 					}
 					flag = 1;
 				}
@@ -353,10 +356,10 @@ int	checkLeftUp()
 			else if (count == 0)
 			{
 				start = j;
-				kind = block[j - jj][jj];
+				kind = block[j - jj][jj] % 3;
 				count++;
 			}
-			else if (block[j - jj][jj] == kind)
+			else if (block[j - jj][jj] % 3 == kind)
 				count++;
 			else
 			{
@@ -364,19 +367,20 @@ int	checkLeftUp()
 				{
 					for (int idx = start; idx < jj; idx++)
 					{
-						block[j - idx][idx] = kind + 2;
+						block[j - idx][idx] = kind + 3;
 					}
 					flag = 1;
 				}
+				kind = block[j - jj][jj] % 3;
 				start = j;
 				count = 1;
 			}
 		}
 		if (count >= 5)
 		{
-			for (int idx = start; idx < h; idx++)
+			for (int idx = start; idx <= h; idx++)
 			{
-				block[j - idx][idx] = kind + 2;
+				block[j - idx][idx] = kind + 3;
 			}
 			flag = 1;
 		}
@@ -398,11 +402,11 @@ int	addpoint(int mPlayer)
 		{
 			if (block[i][j] > 2)
 			{
-				if (block[i][j] == mPlayer + 2)
+				if (block[i][j] == mPlayer + 3)
 					point++;
-				if (block[i][j] == 3)
+				if (block[i][j] == 4)
 					b1++;
-				else
+				if (block[i][j] == 5)
 					b2++;
 				count++;
 				block[i][j] = 0;
@@ -425,6 +429,7 @@ int	addpoint(int mPlayer)
 int dropBlocks(int mPlayer, int mCol)
 {
 	int ret = 0;
+	int flag = 1;
 	for (int i = 0; i < 3; i++)
 	{
 		block[mCol + i][++block[mCol + i][0]] = mPlayer;
@@ -433,8 +438,21 @@ int dropBlocks(int mPlayer, int mCol)
 		block1 += 3;
 	else
 		block2 += 3;
-	while (checkHori() || checkVerti()|| checkRightUp() || checkLeftUp())
+	while (flag)
+	{
+		flag = 0;
+		if (checkHori())
+			flag = 1;
+		if (checkVerti())
+			flag = 1;
+		if (checkRightUp())
+			flag = 1;
+		if (checkLeftUp())
+			flag = 1;
+		
 		ret += addpoint(mPlayer);
+
+	}
 	if (mPlayer == 1)
 		point1 += ret;
 	else
@@ -448,45 +466,63 @@ int changeBlocks(int mPlayer, int mCol)
 {
 	queue<pair<int, int> >	bfs;
 	int ret = 0;
-	int kind = block[mCol][1];
+	int kind = block[mCol][1] % 3;
 	int i = mCol; 
 	int j = 1;
 	int change = (mPlayer == 2 ? 1 : 2);
+	int flag = 1;
 
-	if (kind != 0)
+	if (kind == change)
+	{
 		bfs.push({mCol, 1});
+		block[mCol][1] = change;
+	}
+	printMap();
 	while (bfs.size() > 0)
 	{
-		block[i][j] = change;
-		cout<<bfs.size()<<endl;
 		i = bfs.front().first;
 		j = bfs.front().second;
-		if (i - 1 >= 0 && block[i - 1][j] == kind)
+		bfs.pop();
+		if (i - 1 >= 0 && block[i - 1][j] % 3 == kind)
 		{
 			bfs.push({i - 1, j});
-			block[i - 1][j] = change;
+			block[i - 1][j] = mPlayer;
 		}
-		if (i + 1 < WIDTH && block[i + 1][j] == kind)
+		if (i + 1 < WIDTH && block[i + 1][j] % 3 == kind)
 		{
 			bfs.push({i + 1, j});
-			block[i + 1][j] = change;
+			block[i + 1][j] = mPlayer;
 		}
-		if (j - 1 > 0 && block[i][j - 1] == kind)
+		if (j - 1 > 0 && block[i][j - 1] % 3 == kind)
 		{
 			bfs.push({i, j - 1});
-			block[i][j - 1] = change;
+			block[i][j - 1] = mPlayer;
 		}
-		if (j + 1 <= HEIGHT&& block[i][j] == kind)
+		if (j + 1 <= HEIGHT && block[i][j + 1] % 3 == kind)
 		{
 			bfs.push({i, j + 1});
-			block[i][j + 1] = change;
+			block[i][j + 1] = mPlayer;
 		}
-		bfs.pop();
 	}
-	cout<<"Change"<<endl;
-	printMap();
-	while (checkHori() || checkVerti()|| checkRightUp() || checkLeftUp())
+	while (flag)
+	{
+		flag = 0;
+		if (checkHori())
+			flag = 1;
+		if (checkVerti())
+			flag = 1;
+		if (checkRightUp())
+			flag = 1;
+		if (checkLeftUp())
+			flag = 1;
+		
 		ret += addpoint(mPlayer);
+
+	}
+	if (mPlayer == 1)
+		point1 += ret;
+	else
+		point2 += ret;
 	cout<<"Change"<<endl;
 	printMap();
 	return ret;
