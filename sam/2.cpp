@@ -6,7 +6,7 @@
 
 int	WIDTH;
 int	HEIGHT;
-int block[201][201];
+int block[201][202];
 int point1;
 int point2;
 int block1;
@@ -18,7 +18,7 @@ void init(int W, int H)
 {
 	WIDTH = W;
 	HEIGHT = H;
-	fill(&block[0][0], &block[200][200], 0);
+	fill(&block[0][0], &block[200][201], 0);
 	point1 = 0;
 	point2 = 0;
 	block1 = 0;
@@ -51,6 +51,10 @@ int	checkVerti()
 					for (int idx = start; idx < j; idx++)
 					{
 						block[i][idx] = kind + 3;
+						if (block[i][201] == 0)
+							block[i][201] = idx;
+						else
+							block[i][201] = min(block[i][201], idx);
 					}
 					flag = 1;
 				}
@@ -64,6 +68,10 @@ int	checkVerti()
 			for (int idx = start; idx <= block[i][0]; idx++)
 			{
 				block[i][idx] = kind + 3;
+				if (block[i][201] == 0)
+					block[i][201] = idx;
+				else
+					block[i][201] = min(block[i][201], idx);
 			}
 			flag = 1;
 		}
@@ -95,6 +103,10 @@ int	checkHori()
 					for (int idx = start; idx < i; idx++)
 					{
 						block[idx][j] = kind + 3;
+						if (block[idx][201] == 0)
+							block[idx][201] = j;
+						else
+							block[idx][201] = min(block[idx][201], j);
 					}
 					flag = 1;
 				}
@@ -119,6 +131,10 @@ int	checkHori()
 					for (int idx = start; idx < i; idx++)
 					{
 						block[idx][j] = kind + 3;
+						if (block[idx][201] == 0)
+							block[idx][201] = j;
+						else
+							block[idx][201] = min(block[idx][201], j);
 					}
 					flag = 1;
 				}
@@ -132,6 +148,10 @@ int	checkHori()
 			for (int idx = start; idx < WIDTH; idx++)
 			{
 				block[idx][j] = kind + 3;
+				if (block[idx][201] == 0)
+					block[idx][201] = j;
+				else
+					block[idx][201] = min(block[idx][201], j);
 			}
 			flag = 1;
 		}
@@ -165,6 +185,11 @@ int	checkRightUp()
 					for (int idx = start; idx < j; idx++)
 					{
 						block[i + idx - 1][idx] = kind + 3;
+						if (block[i + idx - 1][201] == 0)
+							block[i + idx - 1][201] = idx;
+						else
+							block[i + idx - 1][201] = min(block[i + idx - 1][201], idx);
+
 					}
 					flag = 1;
 				}
@@ -185,6 +210,10 @@ int	checkRightUp()
 					for (int idx = start; idx < j; idx++)
 					{
 						block[i + idx - 1][idx] = kind + 3;
+						if (block[i + idx - 1][201] == 0)
+							block[i + idx - 1][201] = idx;
+						else
+							block[i + idx - 1][201] = min(block[i + idx - 1][201], idx);
 					}
 					flag = 1;
 				}
@@ -198,6 +227,10 @@ int	checkRightUp()
 			for (int idx = 0; idx < count; idx++)
 			{
 				block[i + idx + start - 1][start + idx] = kind + 3;
+				if (block[i + idx + start - 1][201] == 0)
+					block[i + idx + start - 1][201] = start + idx;
+				else
+					block[i + idx + start - 1][201] = min(block[i + idx + start - 1][201], start + idx);
 			}
 			flag = 1;
 		}
@@ -220,6 +253,10 @@ int	checkRightUp()
 					for (int idx = start; idx < jj; idx++)
 					{
 						block[idx][j + idx] = kind + 3;
+						if (block[idx][201] == 0)
+							block[idx][201] = j + idx;
+						else
+							block[idx][201] = min(block[idx][201], j + idx);
 					}
 					flag = 1;
 				}
@@ -240,6 +277,10 @@ int	checkRightUp()
 					for (int idx = start; idx < jj; idx++)
 					{
 						block[idx][j + idx] = kind + 3;
+						if (block[idx][201] == 0)
+							block[idx][201] = j + idx;
+						else
+							block[idx][201] = min(block[idx][201], j + idx);
 					}
 					flag = 1;
 				}
@@ -253,6 +294,10 @@ int	checkRightUp()
 			for (int idx = 0; idx < count; idx++)
 			{
 				block[start + idx][j + start + idx] = kind + 3;
+				if (block[start + idx][201] == 0)
+					block[start + idx][201] = start + j + idx;
+				else
+					block[start + idx][201] = min(block[start + idx][201], start + j + idx);
 			}
 			flag = 1;
 		}
@@ -288,6 +333,10 @@ int	checkLeftUp()
 					for (int idx = start; idx < j; idx++)
 					{
 						block[i - idx][idx] = kind + 3;
+						if (block[i - idx][201] == 0)
+							block[i - idx][201] = idx;
+						else
+							block[i - idx][201] = min(block[i - idx][201], idx);
 					}
 					flag = 1;
 				}
@@ -308,6 +357,10 @@ int	checkLeftUp()
 					for (int idx = start; idx < j; idx++)
 					{
 						block[i - idx][idx] = kind + 3;
+						if (block[i - idx][201] == 0)
+							block[i - idx][201] = idx;
+						else
+							block[i - idx][201] = min(block[i - idx][201], idx);
 					}
 					flag = 1;
 				}
@@ -321,6 +374,10 @@ int	checkLeftUp()
 			for (int idx = 0; idx < count; idx++)
 			{
 				block[i - (idx + start)][idx + start] = kind + 3;
+				if (block[i - (idx + start)][201] == 0)
+					block[i - (idx + start)][201] = (idx + start);
+				else
+					block[i - (idx + start)][201] = min(block[i - (idx + start)][201], (idx + start));
 			}
 			flag = 1;
 		}
@@ -343,6 +400,10 @@ int	checkLeftUp()
 					for (int idx = start; idx < jj; idx++)
 					{
 						block[x - idx][j + idx] = kind + 3;
+						if (block[x - idx][201] == 0)
+							block[x - idx][201] = j + idx;
+						else
+							block[x - idx][201] = min(block[x - idx][201], j + idx);
 					}
 					flag = 1;
 				}
@@ -363,6 +424,10 @@ int	checkLeftUp()
 					for (int idx = start; idx < jj; idx++)
 					{
 						block[x - idx][j + idx] = kind + 3;
+						if (block[x - idx][201] == 0)
+							block[x - idx][201] = j + idx;
+						else
+							block[x - idx][201] = min(block[x - idx][201], j + idx);
 					}
 					flag = 1;
 				}
@@ -376,6 +441,10 @@ int	checkLeftUp()
 			for (int idx = 0; idx < count; idx++)
 			{
 				block[x - (start + idx)][j + start + idx] = kind + 3;
+				if (block[x - (start + idx)][201] == 0)
+					block[x - (start + idx)][201] = j + (start + idx);
+				else
+					block[x - (start + idx)][201] = min(block[x - (start + idx)][201], j + (start + idx));
 			}
 			flag = 1;
 		}
@@ -392,9 +461,11 @@ int	addpoint(int mPlayer)
 
 	for (int i = 0; i < WIDTH; i++)
 	{
+		if (block[i][201] == 0)
+			continue;
 		int count = 0;
 		int h = block[i][0];
-		for (int j = 1; j <= h; j++)
+		for (int j = block[i][201]; j <= h; j++)
 		{
 			if (block[i][j] > 2)
 			{
@@ -414,6 +485,7 @@ int	addpoint(int mPlayer)
 				block[i][j] = 0;
 			}
 		}
+		block[i][201] = 0;
 		block[i][0] -= count;
 	}
 	block1 -= b1;
