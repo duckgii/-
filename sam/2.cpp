@@ -18,33 +18,42 @@ void init(int W, int H)
 {
 	WIDTH = W;
 	HEIGHT = H;
+	for (int i = 0; i < 201; i++)
+	{
+		for (int j = 0; j < 201; j++)
+		{
+			block[i][j] = 0;
+		}
+	}
+	point1 = 0;
+	point2 = 0;
+	block1 = 0;
+	block2 = 0;
 }
 
-void	printMap()
-{
-	for (int  i = 0; i < WIDTH; i++)
-	{
-		for (int j = 1; j <= HEIGHT; j++)
-		{
-			cout<<block[i][j]<<" ";
-		}
-		cout<<endl;
-	}
-	cout<<endl<<endl<<endl;
-}
+// void	printMap()
+// {
+// 	for (int  i = 0; i < WIDTH; i++)
+// 	{
+// 		for (int j = 1; j <= HEIGHT; j++)
+// 		{
+// 			cout<<block[i][j]<<" ";
+// 		}
+// 		cout<<endl;
+// 	}
+// 	cout<<endl<<endl<<endl;
+// }
 
 int	checkVerti()
 {
-	int	h;
 	int flag = 0;
 
 	for (int i = 0; i < WIDTH; i++)
 	{
-		h = block[i][0];
 		int count = 0;
 		int start;
 		int kind;
-		for (int j = 1; j <= h; j++)
+		for (int j = 1; j <= block[i][0]; j++)
 		{
 			if (count == 0)
 			{
@@ -174,7 +183,7 @@ int	checkRightUp() //아마 여기도 마찬가지일듯? // 29에서 문제
 				{
 					for (int idx = start; idx < j; idx++)
 					{
-						block[i + start - 1][start] = kind + 3;
+						block[i + idx - 1][idx] = kind + 3;
 					}
 					flag = 1;
 				}
@@ -194,7 +203,7 @@ int	checkRightUp() //아마 여기도 마찬가지일듯? // 29에서 문제
 				{
 					for (int idx = start; idx < j; idx++)
 					{
-						block[i + start - 1][start] = kind + 3;
+						block[i + idx - 1][idx] = kind + 3;
 					}
 					flag = 1;
 				}
@@ -205,28 +214,31 @@ int	checkRightUp() //아마 여기도 마찬가지일듯? // 29에서 문제
 		}
 		if (count >= 5)
 		{
-			for (int idx = start; idx <= h; idx++)
+			for (int idx = 0; idx < count; idx++)
 			{
-				block[i + start - 1][start] = kind + 3;
+				block[i + idx + start - 1][start + idx] = kind + 3;
 			}
 			flag = 1;
 		}
 		count = 0;
 	}
-	for (int j = 2; j <= h; j++)
+
+
+	for (int j = 1; j <= h; j++)
 	{
-		int x = j;
 		int count = 0;
 		int kind, start;
-		for (int jj = 1; jj <= h; jj++)
+		for (int jj = 0; jj <= h; jj++)
 		{
-			if (block[j + jj - 1][jj] == 0)
+			if (j + jj > h)
+				break;
+			if (block[jj][j + jj] == 0)
 			{
 				if (count >= 5)
 				{
 					for (int idx = start; idx < jj; idx++)
 					{
-						block[j + start - 1][start] = kind + 3;
+						block[idx][j + idx] = kind + 3;
 					}
 					flag = 1;
 				}
@@ -235,10 +247,10 @@ int	checkRightUp() //아마 여기도 마찬가지일듯? // 29에서 문제
 			else if (count == 0)
 			{
 				start = jj;
-				kind = block[j + jj - 1][jj] % 3;
+				kind = block[jj][j + jj] % 3;
 				count++;
 			}
-			else if (block[j + jj - 1][jj] % 3 == kind)
+			else if (block[jj][j + jj] % 3 == kind)
 				count++;
 			else
 			{
@@ -246,20 +258,20 @@ int	checkRightUp() //아마 여기도 마찬가지일듯? // 29에서 문제
 				{
 					for (int idx = start; idx < jj; idx++)
 					{
-						block[j + start - 1][start] = kind + 3;
+						block[idx][j + idx] = kind + 3;
 					}
 					flag = 1;
 				}
-				kind = block[j + jj - 1][jj] % 3;
+				kind = block[jj][j + jj] % 3;
 				start = jj;
 				count = 1;
 			}
 		}
 		if (count >= 5)
 		{
-			for (int idx = start; idx <= h; idx++)
+			for (int idx = 0; idx < count; idx++)
 			{
-				block[j + start - 1][start] = kind + 3;
+				block[start + idx][j + start + idx] = kind + 3;
 			}
 			flag = 1;
 		}
@@ -325,29 +337,31 @@ int	checkLeftUp() // 여기 문제
 		}
 		if (count >= 5)
 		{
-			for (int idx = start; idx <= h; idx++)
+			for (int idx = 0; idx < count; idx++)
 			{
-				block[i - idx][idx] = kind + 3;
+				block[i - (idx + start)][idx + start] = kind + 3;
 			}
 			flag = 1;
 		}
 	}
-	for (int j = 2; j <= h; j++)
+
+
+	for (int j = 1; j <= h; j++)
 	{
-		int x = j;
+		int x = WIDTH - 1;
 		int count = 0;
 		int kind, start;
-		for (int jj = 1; jj <= h; jj++)
+		for (int jj = 0; jj <= h; jj++)
 		{
-			if (j - jj < 0)
+			if (x - jj < 0 || j + jj > h)
 				break;
-			if (block[j - jj][jj] == 0)
+			if (block[x - jj][j + jj] == 0)
 			{
 				if (count >= 5)
 				{
 					for (int idx = start; idx < jj; idx++)
 					{
-						block[j - idx][idx] = kind + 3;
+						block[x - idx][j + idx] = kind + 3;
 					}
 					flag = 1;
 				}
@@ -356,10 +370,10 @@ int	checkLeftUp() // 여기 문제
 			else if (count == 0)
 			{
 				start = jj;
-				kind = block[j - jj][jj] % 3;
+				kind = block[x - jj][j + jj] % 3;
 				count++;
 			}
-			else if (block[j - jj][jj] % 3 == kind)
+			else if (block[x - jj][j + jj] % 3 == kind)
 				count++;
 			else
 			{
@@ -367,20 +381,20 @@ int	checkLeftUp() // 여기 문제
 				{
 					for (int idx = start; idx < jj; idx++)
 					{
-						block[j - idx][idx] = kind + 3;
+						block[x - idx][j + idx] = kind + 3;
 					}
 					flag = 1;
 				}
-				kind = block[j - jj][jj] % 3;
+				kind = block[x - jj][j + jj] % 3;
 				start = jj;
 				count = 1;
 			}
 		}
 		if (count >= 5)
 		{
-			for (int idx = start; idx <= h; idx++)
+			for (int idx = 0; idx < count; idx++)
 			{
-				block[j - idx][idx] = kind + 3;
+				block[x - (start + idx)][j + start + idx] = kind + 3;
 			}
 			flag = 1;
 		}
@@ -398,7 +412,8 @@ int	addpoint(int mPlayer)
 	for (int i = 0; i < WIDTH; i++)
 	{
 		int count = 0;
-		for (int j = 1; j <= HEIGHT; j++)
+		int h = block[i][0];
+		for (int j = 1; j <= h; j++)
 		{
 			if (block[i][j] > 2)
 			{
@@ -470,8 +485,8 @@ int dropBlocks(int mPlayer, int mCol)
 		point1 += ret;
 	else
 		point2 += ret;
-	cout<<"add "<<mPlayer<<" "<<mCol<<endl;
-	printMap();
+	// cout<<"add "<<mPlayer<<" "<<mCol<<" "<<ret<<endl;
+	// printMap();
 	return ret;
 }
 
@@ -482,13 +497,17 @@ int changeBlocks(int mPlayer, int mCol)
 	int kind = block[mCol][1] % 3;
 	int i = mCol; 
 	int j = 1;
-	int change = (mPlayer == 2 ? 1 : 2);
+	int diff;
 	int flag = 1;
 
-	if (kind == change)
+	if (mPlayer == 1)
+		diff = 2;
+	else
+		diff = 1;
+	if (kind == diff)
 	{
 		bfs.push({mCol, 1});
-		block[mCol][1] = change;
+		block[mCol][1] = mPlayer;
 	}
 	while (bfs.size() > 0)
 	{
@@ -535,8 +554,8 @@ int changeBlocks(int mPlayer, int mCol)
 		point1 += ret;
 	else
 		point2 += ret;
-	cout<<"Change"<<endl;
-	printMap();
+	// cout<<"Change"<<endl;
+	// printMap();
 	return ret;
 }
 
@@ -545,8 +564,6 @@ int getResult(int mBlockCnt[2])
 {
 	mBlockCnt[0] = block1;
 	mBlockCnt[1] = block2;
-	cout<<"p1 : "<<point1<<" p2 : "<<point2<<endl;
-	cout<<"b1 : "<<block1<<" b2 : "<<block2<<endl;
 	if (point1 == point2)
 		return (0);
 	if (point1 > point2)
