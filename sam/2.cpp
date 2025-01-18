@@ -18,31 +18,12 @@ void init(int W, int H)
 {
 	WIDTH = W;
 	HEIGHT = H;
-	for (int i = 0; i < 201; i++)
-	{
-		for (int j = 0; j < 201; j++)
-		{
-			block[i][j] = 0;
-		}
-	}
+	fill(&block[0][0], &block[200][200], 0);
 	point1 = 0;
 	point2 = 0;
 	block1 = 0;
 	block2 = 0;
 }
-
-// void	printMap()
-// {
-// 	for (int  i = 0; i < WIDTH; i++)
-// 	{
-// 		for (int j = 1; j <= HEIGHT; j++)
-// 		{
-// 			cout<<block[i][j]<<" ";
-// 		}
-// 		cout<<endl;
-// 	}
-// 	cout<<endl<<endl<<endl;
-// }
 
 int	checkVerti()
 {
@@ -80,7 +61,7 @@ int	checkVerti()
 		}
 		if (count >= 5)
 		{
-			for (int idx = start; idx <= h; idx++)
+			for (int idx = start; idx <= block[i][0]; idx++)
 			{
 				block[i][idx] = kind + 3;
 			}
@@ -159,7 +140,7 @@ int	checkHori()
 	return (flag);
 }
 
-int	checkRightUp() //아마 여기도 마찬가지일듯? // 29에서 문제
+int	checkRightUp() 
 {
 	int flag = 0;
 	int	h = 0;
@@ -280,7 +261,7 @@ int	checkRightUp() //아마 여기도 마찬가지일듯? // 29에서 문제
 	return (flag);
 }
 
-int	checkLeftUp() // 여기 문제
+int	checkLeftUp() 
 {
 	int flag = 0;
 	int	h = 0;
@@ -419,10 +400,10 @@ int	addpoint(int mPlayer)
 			{
 				if (block[i][j] == mPlayer + 3)
 					point++;
-				// if (block[i][j] == 4)
-				// 	b1++;
-				// if (block[i][j] == 5)
-				// 	b2++;
+				if (block[i][j] == 4)
+					b1++;
+				if (block[i][j] == 5)
+					b2++;
 				count++;
 				block[i][j] = 0;
 				continue;
@@ -435,21 +416,8 @@ int	addpoint(int mPlayer)
 		}
 		block[i][0] -= count;
 	}
-	for (int i = 0; i < WIDTH; i++)
-	{
-		int h = block[i][0];
-		for (int j = 1; j <= h; j++)
-		{
-			if (block[i][j] == 1)
-				b1++;
-			else if (block[i][j] == 2)
-				b2++;
-		}
-	}
-	// block1 -= b1;
-	// block2 -= b2;
-	block1 = b1;
-	block2 = b2;
+	block1 -= b1;
+	block2 -= b2;
 	return (point);
 }
 
@@ -485,8 +453,6 @@ int dropBlocks(int mPlayer, int mCol)
 		point1 += ret;
 	else
 		point2 += ret;
-	// cout<<"add "<<mPlayer<<" "<<mCol<<" "<<ret<<endl;
-	// printMap();
 	return ret;
 }
 
@@ -499,6 +465,7 @@ int changeBlocks(int mPlayer, int mCol)
 	int j = 1;
 	int diff;
 	int flag = 1;
+	int count = 0;
 
 	if (mPlayer == 1)
 		diff = 2;
@@ -513,6 +480,7 @@ int changeBlocks(int mPlayer, int mCol)
 	{
 		i = bfs.front().first;
 		j = bfs.front().second;
+		count++;
 		bfs.pop();
 		if (i - 1 >= 0 && block[i - 1][j] % 3 == kind)
 		{
@@ -551,11 +519,17 @@ int changeBlocks(int mPlayer, int mCol)
 
 	}
 	if (mPlayer == 1)
+	{
 		point1 += ret;
+		block1 += count;
+		block2 -= count;
+	}
 	else
+	{
 		point2 += ret;
-	// cout<<"Change"<<endl;
-	// printMap();
+		block2 += count;
+		block1 -= count;
+	}
 	return ret;
 }
 
