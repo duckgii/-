@@ -150,7 +150,7 @@ int	checkHori()
 	return (flag);
 }
 
-int	checkRightUp()
+int	checkRightUp() //아마 여기도 마찬가지일듯? // 29에서 문제
 {
 	int flag = 0;
 	int	h = 0;
@@ -182,7 +182,7 @@ int	checkRightUp()
 			}
 			else if (count == 0)
 			{
-				start = i;
+				start = j;
 				kind = block[i + j - 1][j] % 3;
 				count++;
 			}
@@ -199,7 +199,7 @@ int	checkRightUp()
 					flag = 1;
 				}
 				kind = block[i + j - 1][j] % 3;
-				start = i;
+				start = j;
 				count = 1;
 			}
 		}
@@ -234,7 +234,7 @@ int	checkRightUp()
 			}
 			else if (count == 0)
 			{
-				start = j;
+				start = jj;
 				kind = block[j + jj - 1][jj] % 3;
 				count++;
 			}
@@ -251,7 +251,7 @@ int	checkRightUp()
 					flag = 1;
 				}
 				kind = block[j + jj - 1][jj] % 3;
-				start = j;
+				start = jj;
 				count = 1;
 			}
 		}
@@ -268,9 +268,9 @@ int	checkRightUp()
 	return (flag);
 }
 
-int	checkLeftUp()
+int	checkLeftUp() // 여기 문제
 {
-		int flag = 0;
+	int flag = 0;
 	int	h = 0;
 
 	for (int i = 0; i < WIDTH; i++)
@@ -302,7 +302,7 @@ int	checkLeftUp()
 			}
 			else if (count == 0)
 			{
-				start = i;
+				start = j;
 				kind = block[i - j][j] % 3;
 				count++;
 			}
@@ -320,7 +320,7 @@ int	checkLeftUp()
 				}
 				kind = block[i - j][j] % 3;
 				count = 1;
-				start = i;
+				start = j;
 			}
 		}
 		if (count >= 5)
@@ -355,7 +355,7 @@ int	checkLeftUp()
 			}
 			else if (count == 0)
 			{
-				start = j;
+				start = jj;
 				kind = block[j - jj][jj] % 3;
 				count++;
 			}
@@ -372,7 +372,7 @@ int	checkLeftUp()
 					flag = 1;
 				}
 				kind = block[j - jj][jj] % 3;
-				start = j;
+				start = jj;
 				count = 1;
 			}
 		}
@@ -404,10 +404,10 @@ int	addpoint(int mPlayer)
 			{
 				if (block[i][j] == mPlayer + 3)
 					point++;
-				if (block[i][j] == 4)
-					b1++;
-				if (block[i][j] == 5)
-					b2++;
+				// if (block[i][j] == 4)
+				// 	b1++;
+				// if (block[i][j] == 5)
+				// 	b2++;
 				count++;
 				block[i][j] = 0;
 				continue;
@@ -420,8 +420,21 @@ int	addpoint(int mPlayer)
 		}
 		block[i][0] -= count;
 	}
-	block1 -= b1;
-	block2 -= b2;
+	for (int i = 0; i < WIDTH; i++)
+	{
+		int h = block[i][0];
+		for (int j = 1; j <= h; j++)
+		{
+			if (block[i][j] == 1)
+				b1++;
+			else if (block[i][j] == 2)
+				b2++;
+		}
+	}
+	// block1 -= b1;
+	// block2 -= b2;
+	block1 = b1;
+	block2 = b2;
 	return (point);
 }
 
@@ -457,7 +470,7 @@ int dropBlocks(int mPlayer, int mCol)
 		point1 += ret;
 	else
 		point2 += ret;
-	cout<<"add"<<endl;
+	cout<<"add "<<mPlayer<<" "<<mCol<<endl;
 	printMap();
 	return ret;
 }
@@ -477,7 +490,6 @@ int changeBlocks(int mPlayer, int mCol)
 		bfs.push({mCol, 1});
 		block[mCol][1] = change;
 	}
-	printMap();
 	while (bfs.size() > 0)
 	{
 		i = bfs.front().first;
